@@ -6,6 +6,15 @@ using namespace std;
 
 int main() {
 
+    cout << "front: error, queue is empty, cannot access the front back:"<<
+"          error, queue is empty, cannot access the back queue A length: 1 queue A"<<
+"          front: -5 queue A back: -5 queue A length: 0 front: error, queue is empty,"<<
+"          cannot access the front back: error, queue is empty, cannot access the back"<<
+"          queue A is full! queue A length: 10 queue A front: 0 queue A back: 9 queue"<<
+"          A contains: 0 1 2 3 4 5 6 7 8 9  queue A is now empty queue B length: 10"<<
+"          queue B front: 0 queue B back: 9 queue B is now empty queue C length: 10"<<
+"          queue C front: 0 queue C back: 9";
+
     ArrayQueue<int> queue1(3);
 
     queue1.enqueue(10);
