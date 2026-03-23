@@ -2,9 +2,7 @@
 #include "ArrayQueue.hpp"
 
 template <typename T>
-ArrayQueue<T>::ArrayQueue(int i) : maxSize(i), frontIndex(0), backIndex(maxSize - 1) {
-    // TODO
-}
+ArrayQueue<T>::ArrayQueue(int i) : maxSize(i), frontIndex(0), backIndex(maxSize - 1), buffer(new T[i]{}) {}
 
 template <typename T>
 ArrayQueue<T>::ArrayQueue(const ArrayQueue<T>& copyObj) {
@@ -35,19 +33,33 @@ T ArrayQueue<T>::back() const {
 template <typename T>
 void ArrayQueue<T>::clear() {
     // TODO
+    delete[] buffer;
+    buffer = nullptr;
+    this->length = 0;
+    frontIndex = 0;
+    backIndex = -1;
+    maxSize = 0;  // this 0 out necessary?
 }
 
 template <typename T>
 void ArrayQueue<T>::copy(const ArrayQueue<T>& copyObj) {
     // TODO
+    maxSize = copyObj.getMaxSize();
+    backIndex = copyObj.backIndex;
+    frontIndex = copyObj.frontIndex;
+    this->length = copyObj.getLength();
+    buffer = new T[maxSize];    
+
+    for (int i = 0; i < maxSize; ++i) {
+        buffer[i] = copyObj.buffer[i];
+    }
 }
 
 template <typename T>
 void ArrayQueue<T>::dequeue() {
     // TODO
     if (isEmpty()) throw string("Queue is empty, nothing to remove");
-    cout << "Removing value " << front();
-    ++frontIndex % maxSize;  // auto "loops" around if front would overflow
+    frontIndex = (frontIndex + 1) % maxSize;  // auto "loops" around if front would overflow
     --this->length;
 }
 
@@ -58,14 +70,17 @@ void ArrayQueue<T>::enqueue(const T& elem) {
         int newSize = maxSize * 2 + 1;
         T* newBuffer = new T[newSize];
         for (int i = 0; i < this->length; ++i) {
-            newBuffer[i] = front();
-            dequeue();
+            newBuffer[i] = buffer[(frontIndex + i) % maxSize];
         }        
-        clear();
+        delete[] buffer;
         buffer = newBuffer;
         maxSize = newSize;
+        frontIndex = 0;
+        backIndex = this->length - 1;
     } 
-    buffer[++backIndex % maxSize] = elem;
+
+    backIndex = (backIndex + 1) % maxSize;
+    buffer[backIndex] = elem;
     ++this->length;        
 }
 
@@ -94,4 +109,13 @@ bool ArrayQueue<T>::isEmpty() const {
 template <typename T>
 bool ArrayQueue<T>::isFull() const {
     return this->length == maxSize;
+}
+
+template <typename T>
+void ArrayQueue<T>::printQueue() const {
+    if (isEmpty()) throw string("Quueueueeueu is empty, nothing to print");
+    for (int i = 0; i < this->length; ++i) {
+        cout << "[" << buffer[(frontIndex + i) % maxSize] << "] ";
+    }
+    cout << endl;
 }

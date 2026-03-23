@@ -62,6 +62,9 @@ class ArrayQueue : public Queue<T> {
 
         // determine if the queue is currently full
         bool isFull() const;
+        
+        void printQueue() const;
+
 };
 
 #include "ArrayQueue.tpp"

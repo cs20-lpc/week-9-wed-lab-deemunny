@@ -34,6 +34,8 @@ class Queue {
 
         // determine if the queue is currently empty
         virtual bool isEmpty() const = 0;
+
+        virtual void printQueue() const = 0;
 };
 
 #endif
